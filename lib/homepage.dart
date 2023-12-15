@@ -42,7 +42,7 @@ class homePage extends StatelessWidget {
                   children: [
                     IconButton(
                       constraints: BoxConstraints(
-                        maxHeight: 0,
+                        maxHeight: 50,
 
                       ),
                       padding: EdgeInsets.all(20),
