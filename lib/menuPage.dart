@@ -8,11 +8,11 @@ class menuPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.indigo[800],
+        backgroundColor: Color.fromARGB(255, 40, 39, 81),
         iconTheme: IconThemeData(color: Colors.white, size: 52),
       ),
       body: Container(
-        color: Colors.indigo[800],
+        color: Color.fromARGB(255, 40, 39, 81),
         child: ListView(
           children: [
             Card(

@@ -1,5 +1,7 @@
+import 'package:diaryai/calendarPage.dart';
 import 'package:diaryai/menuPage.dart';
 import 'package:flutter/material.dart';
+// import 'package:flutter/services.dart';
 
 class homePage extends StatelessWidget {
   const homePage({Key? key}) : super(key: key);
@@ -56,12 +58,14 @@ class homePage extends StatelessWidget {
                             child: IconButton(
                                 constraints: BoxConstraints(),
                                 padding: EdgeInsets.all(20),
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => calendarPage(),));
+                                },
                                 icon: Icon(
                                   Icons.calendar_month,
                                   size: 64,
                                   color: Colors.white,
-                                )),
+                                ),),
                           ),
                           Padding(
                             padding: const EdgeInsets.only(bottom: 50),
