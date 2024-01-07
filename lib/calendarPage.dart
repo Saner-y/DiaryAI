@@ -1,6 +1,7 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide BoxDecoration,BoxShadow;
 import 'package:table_calendar/table_calendar.dart';
 import 'utils.dart';
+import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
 // final FlutterLocalization localization = FlutterLocalization.instance;
 
 class calendarPage extends StatefulWidget {
@@ -64,7 +65,23 @@ class _calendarPageState extends State<calendarPage> {
             Container(
               margin: EdgeInsets.all(10),
               decoration: BoxDecoration(
-                color: Color.fromARGB(255, 37, 20, 63),
+                boxShadow: [
+                  BoxShadow(
+                    color: Color.fromRGBO(0, 0, 0, 100),
+                    offset: Offset(0, 4),
+                    spreadRadius: 0,
+                    blurRadius: 4,
+                    inset: true,
+                  ),
+                  BoxShadow(
+                    color: Color.fromRGBO(0, 0, 0, 100),
+                    offset: Offset(0, 4),
+                    spreadRadius: 0,
+                    blurRadius: 4,
+                    inset: false,
+                  )
+                ],
+                color: Color.fromARGB(255, 21, 20, 63),
                 borderRadius: BorderRadius.circular(30),
               ),
               child: TableCalendar<Event>(
@@ -84,15 +101,19 @@ class _calendarPageState extends State<calendarPage> {
                     ),
                     formatButtonTextStyle: TextStyle(color: Colors.white)),
                 calendarStyle: CalendarStyle(
+
+                  weekendTextStyle: TextStyle(color: Colors.red[300]),
+                  outsideTextStyle: TextStyle(color: Colors.white38),
                   defaultTextStyle: TextStyle(color: Colors.white),
                   defaultDecoration: BoxDecoration(
                     color: Color.fromRGBO(46, 68, 108, 100),
                     shape: BoxShape.circle,
                   ),
                   weekendDecoration: BoxDecoration(
-                    color: Color.fromRGBO(46, 68, 108, 100),
+                    color: Color.fromRGBO(24, 35, 56, 100),
                     shape: BoxShape.circle,
                   ),
+                  // todayDecoration: BoxDecoration(color: ),
                   selectedDecoration: BoxDecoration(
                       color: Color.fromRGBO(40, 6, 152, 100),
                       shape: BoxShape.circle),
