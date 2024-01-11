@@ -1,7 +1,8 @@
-import 'package:flutter/material.dart' hide BoxDecoration,BoxShadow;
+import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'utils.dart';
-import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
+
+// import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
 // final FlutterLocalization localization = FlutterLocalization.instance;
 
 class calendarPage extends StatefulWidget {
@@ -67,19 +68,17 @@ class _calendarPageState extends State<calendarPage> {
               decoration: BoxDecoration(
                 boxShadow: [
                   BoxShadow(
-                    color: Color.fromRGBO(0, 0, 0, 100),
-                    offset: Offset(0, 4),
-                    spreadRadius: 0,
-                    blurRadius: 4,
-                    inset: true,
-                  ),
+                      color: Color.fromRGBO(0, 0, 0, 100),
+                      offset: Offset(0, 4),
+                      spreadRadius: 0,
+                      blurRadius: 4,
+                      blurStyle: BlurStyle.inner),
                   BoxShadow(
-                    color: Color.fromRGBO(0, 0, 0, 100),
-                    offset: Offset(0, 4),
-                    spreadRadius: 0,
-                    blurRadius: 4,
-                    inset: false,
-                  )
+                      color: Color.fromRGBO(0, 0, 0, 100),
+                      offset: Offset(0, 4),
+                      spreadRadius: 0,
+                      blurRadius: 4,
+                      blurStyle: BlurStyle.outer)
                 ],
                 color: Color.fromARGB(255, 21, 20, 63),
                 borderRadius: BorderRadius.circular(30),
@@ -93,15 +92,32 @@ class _calendarPageState extends State<calendarPage> {
                 eventLoader: _getEventsForDay,
                 startingDayOfWeek: StartingDayOfWeek.monday,
                 headerStyle: HeaderStyle(
-                    titleTextStyle: TextStyle(color: Colors.white),
-                    formatButtonDecoration: BoxDecoration(
-                      border: Border.all(color: Colors.white),
-                      shape: BoxShape.rectangle,
-                      borderRadius: BorderRadius.circular(45),
-                    ),
-                    formatButtonTextStyle: TextStyle(color: Colors.white)),
+                  formatButtonShowsNext: false,
+                  leftChevronIcon: Icon(
+                    Icons.chevron_left,
+                    color: Colors.white,
+                  ),
+                  rightChevronIcon: Icon(
+                    Icons.chevron_right,
+                    color: Colors.white,
+                  ),
+                  titleTextStyle: TextStyle(color: Colors.white),
+                  formatButtonDecoration: BoxDecoration(
+                    border: Border.all(color: Colors.white),
+                    shape: BoxShape.rectangle,
+                    borderRadius: BorderRadius.circular(45),
+                  ),
+                  formatButtonTextStyle: TextStyle(color: Colors.white),
+                ),
+                daysOfWeekHeight: 50,
+                daysOfWeekStyle: DaysOfWeekStyle(
+                  weekdayStyle: TextStyle(color: Colors.white),
+                  weekendStyle: TextStyle(color: Colors.white),
+                ),
                 calendarStyle: CalendarStyle(
-
+                  markerDecoration: BoxDecoration(
+                      color: Color.fromRGBO(78, 116, 184, 1),
+                      shape: BoxShape.circle),
                   weekendTextStyle: TextStyle(color: Colors.red[300]),
                   outsideTextStyle: TextStyle(color: Colors.white38),
                   defaultTextStyle: TextStyle(color: Colors.white),
@@ -113,7 +129,8 @@ class _calendarPageState extends State<calendarPage> {
                     color: Color.fromRGBO(24, 35, 56, 100),
                     shape: BoxShape.circle,
                   ),
-                  // todayDecoration: BoxDecoration(color: ),
+                  todayDecoration: BoxDecoration(
+                      color: Colors.red[300], shape: BoxShape.circle),
                   selectedDecoration: BoxDecoration(
                       color: Color.fromRGBO(40, 6, 152, 100),
                       shape: BoxShape.circle),
@@ -142,19 +159,56 @@ class _calendarPageState extends State<calendarPage> {
                   return ListView.builder(
                     itemCount: value.length,
                     itemBuilder: (context, index) {
-                      return Container(
-                        margin: const EdgeInsets.symmetric(
-                          horizontal: 12.0,
-                          vertical: 4.0,
-                        ),
-                        decoration: BoxDecoration(
-                            border: Border.all(),
-                            borderRadius: BorderRadius.circular(12.0),
-                            color: Colors.green),
-                        child: ListTile(
-                          onTap: () => print('${value[index]}'),
-                          title: Text('${value[index]}'),
-                        ),
+                      return Column(
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.only(
+                              left: 12.0,
+                              right: 12,
+                              top: 4.0,
+                            ),
+                            decoration: BoxDecoration(
+                                border: Border.fromBorderSide(BorderSide(
+                                    color: Color.fromRGBO(46, 68, 108, 1))),
+                                color: Color.fromRGBO(46, 68, 108, 1),
+                                borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(45),
+                                    topRight: Radius.circular(45))),
+                            child: ListTile(
+                            shape: RoundedRectangleBorder(side: BorderSide()),
+                              visualDensity: VisualDensity(vertical: -4),
+                              subtitle: Text(
+                                '' +
+                                    _selectedDay!.day.toString() +
+                                    ' ' +
+                                    ayHesaplama(_selectedDay!) +
+                                    ' ' +
+                                    _selectedDay!.year.toString() +
+                                    '     ',
+                                style: TextStyle(color: Colors.white),
+                              ),
+
+                            ),
+                          ),
+                          Container(
+                            margin: const EdgeInsets.only(
+                              left: 12.0,
+                              right: 12,
+                              bottom: 4.0,
+                            ),
+                            decoration: BoxDecoration(
+                                // border: Border.all(),
+                                borderRadius: BorderRadius.only(
+                                    bottomLeft: Radius.circular(15),
+                                    bottomRight: Radius.circular(15)),
+                                color: Color.fromRGBO(37, 29, 63, 1)),
+                            child: ListTile(
+                              onTap: () => print('${value[index]}'),
+                              title: Text('${value[index]}'),
+                              titleTextStyle: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        ],
                       );
                     },
                   );
@@ -166,4 +220,47 @@ class _calendarPageState extends State<calendarPage> {
       ),
     );
   }
+}
+
+String ayHesaplama(DateTime day){
+  String ay = '';
+  switch(day.month){
+    case 1:
+      ay='Ocak';
+      break;
+    case 2:
+      ay='Şubat';
+      break;
+    case 3:
+      ay='Mart';
+      break;
+    case 4:
+      ay='Nisan';
+      break;
+    case 5:
+      ay='Mayıs';
+      break;
+    case 6:
+      ay='Haziran';
+      break;
+    case 7:
+      ay='Temmuz';
+      break;
+    case 8:
+      ay='Ağustos';
+      break;
+    case 9:
+      ay='Eylül';
+      break;
+    case 10:
+      ay='Ekim';
+      break;
+    case 11:
+      ay='Kasım';
+      break;
+    case 12:
+      ay='Aralık';
+      break;
+  }
+  return ay;
 }

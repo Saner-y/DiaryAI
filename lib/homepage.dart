@@ -1,6 +1,7 @@
 import 'package:diaryai/calendarPage.dart';
 import 'package:diaryai/menuPage.dart';
 import 'package:flutter/material.dart';
+import 'package:diaryai/notePage.dart';
 // import 'package:flutter/services.dart';
 
 class homePage extends StatelessWidget {
@@ -70,7 +71,9 @@ class homePage extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.only(bottom: 50),
                             child: IconButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => notePage()));
+                              },
                               icon: Icon(
                                 Icons.add_circle_outline,
                                 size: 100,
