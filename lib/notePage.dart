@@ -1,5 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
+import 'package:image_picker/image_picker.dart';
 
 class notePage extends StatefulWidget {
   const notePage({super.key});
@@ -9,6 +13,11 @@ class notePage extends StatefulWidget {
 }
 
 class _notePageState extends State<notePage> {
+  TextEditingController _titleController = TextEditingController();
+  DateTime today = DateTime.now();
+  List<File> _imageList = [];
+  File? _image;
+  TextEditingController _bodyController = TextEditingController();
   FaIcon heartFace = FaIcon(
     FontAwesomeIcons.faceGrinHearts,
     size: 35,
@@ -36,6 +45,11 @@ class _notePageState extends State<notePage> {
   );
   FaIcon? selectedFace;
 
+  void initState() {
+    super.initState();
+    _bodyController = TextEditingController();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,56 +69,133 @@ class _notePageState extends State<notePage> {
                 bottom: 20,
               ),
               child: Text(
-                  DateTime
-                      .now()
-                      .day
-                      .toString() +
+                  today.day.toString() +
                       ' ' +
-                      ayHesaplama() +
+                      ayHesaplama(today) +
                       ' ' +
-                      DateTime
-                          .now()
-                          .year
-                          .toString() +
+                      today.year.toString() +
                       ' ' +
-                      gunHesaplama(),
+                      gunHesaplama(today),
                   style: TextStyle(fontSize: 24, color: Colors.white),
                   textAlign: TextAlign.left),
             ),
             Column(
               children: [
-                TextField(),
                 Padding(
                   padding: const EdgeInsets.only(top: 0, left: 20, right: 20),
                   child: TextField(
+                    controller: _titleController,
+                    maxLines: 1,
                     cursorRadius: Radius.circular(50),
                     cursorColor: Colors.white30,
-                    maxLines: 12,
+                    textInputAction: TextInputAction.done,
                     style: TextStyle(color: Colors.white),
-                    // maxLength: 500,
                     decoration: InputDecoration(
                         enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.only(
-                                topRight: Radius.circular(30),
-                                topLeft: Radius.circular(30)),
-                            borderSide: BorderSide(
-                                color: Color.fromRGBO(37, 20, 63, 1))),
+                          borderRadius: BorderRadius.only(
+                            topRight: Radius.circular(30),
+                            topLeft: Radius.circular(30),
+                          ),
+                          borderSide: BorderSide(
+                            color: Color.fromRGBO(37, 20, 63, 1),
+                          ),
+                        ),
                         disabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.only(
-                                topRight: Radius.circular(30),
-                                topLeft: Radius.circular(30)),
-                            borderSide: BorderSide(
-                                color: Color.fromRGBO(37, 20, 63, 1))),
+                          borderRadius: BorderRadius.only(
+                            topRight: Radius.circular(30),
+                            topLeft: Radius.circular(30),
+                          ),
+                          borderSide: BorderSide(
+                            color: Color.fromRGBO(37, 20, 63, 1),
+                          ),
+                        ),
                         focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.only(
-                                topRight: Radius.circular(30),
-                                topLeft: Radius.circular(30)),
-                            borderSide: BorderSide(
-                                color: Color.fromRGBO(37, 20, 63, 1))),
-                        hintText: 'Bugün neler yaşadın? Hemen kaydet!',
+                          borderRadius: BorderRadius.only(
+                            topRight: Radius.circular(30),
+                            topLeft: Radius.circular(30),
+                          ),
+                          borderSide: BorderSide(
+                            color: Color.fromRGBO(37, 20, 63, 1),
+                          ),
+                        ),
+                        hintText: 'Başlık',
                         hintStyle: TextStyle(color: Colors.white30),
                         fillColor: Color.fromRGBO(37, 20, 63, 1),
                         filled: true),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 0, left: 20, right: 20),
+                  child: TextField(
+                    controller: _bodyController,
+                    cursorRadius: Radius.circular(50),
+                    cursorColor: Colors.white30,
+                    minLines: 12,
+                    maxLines: 1000,
+                    textInputAction: TextInputAction.newline,
+                    style: TextStyle(color: Colors.white),
+                    // maxLength: 500,
+                    decoration: InputDecoration(
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.only(
+                          bottomRight: Radius.circular(0),
+                          bottomLeft: Radius.circular(0),
+                        ),
+                        borderSide: BorderSide(
+                          color: Color.fromRGBO(37, 20, 63, 1),
+                        ),
+                      ),
+                      disabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.only(
+                          bottomRight: Radius.circular(0),
+                          bottomLeft: Radius.circular(0),
+                        ),
+                        borderSide: BorderSide(
+                          color: Color.fromRGBO(37, 20, 63, 1),
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.only(
+                          bottomRight: Radius.circular(0),
+                          bottomLeft: Radius.circular(0),
+                        ),
+                        borderSide: BorderSide(
+                          color: Color.fromRGBO(37, 20, 63, 1),
+                        ),
+                      ),
+                      hintText: 'Bugün neler yaşadın? Hemen kaydet!',
+                      hintStyle: TextStyle(color: Colors.white30),
+                      fillColor: Color.fromRGBO(37, 20, 63, 1),
+                      filled: true,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 20, right: 20),
+                  child: Container(
+                    height: 200,
+                    decoration: BoxDecoration(
+                        color: Color.fromRGBO(37, 20, 63, 1),
+                        border:
+                            Border.all(color: Color.fromRGBO(37, 20, 63, 1))),
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: _imageList.length,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                            width: 200,
+                            decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(30)),
+                                image: DecorationImage(
+                                    image: FileImage(_imageList[index]),
+                                    fit: BoxFit.cover)),
+                          ),
+                        );
+                      },
+                    ),
                   ),
                 ),
                 Padding(
@@ -116,32 +207,75 @@ class _notePageState extends State<notePage> {
                             bottomLeft: Radius.circular(30)),
                         color: Color.fromRGBO(37, 20, 63, 1),
                         border:
-                        Border.all(color: Color.fromRGBO(37, 20, 63, 1))),
-                    // color: Color.fromRGBO(37, 20, 63, 1),
+                            Border.all(color: Color.fromRGBO(37, 20, 63, 1))),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        GestureDetector(
-                          child: FaIcon(
-                            FontAwesomeIcons.faceGrinSquint,
-                            size: 40,
+                        IconButton(
+                          onPressed: () {
+                            showModalBottomSheet(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return EmojiPicker(
+                                    onEmojiSelected: (category, emoji) {
+                                      _bodyController.text += emoji.emoji;
+                                    },
+                                    onBackspacePressed: () {
+                                      _bodyController.text =
+                                          _bodyController.text.substring(
+                                              0,
+                                              _bodyController.text.isNotEmpty
+                                                  ? _bodyController.text.length - 2
+                                                  : 0);
+                                    },
+                                    config: Config(
+                                        backspaceColor: Colors.white,
+                                        columns: 7,
+                                        emojiSizeMax: 32.0,
+                                        verticalSpacing: 0,
+                                        horizontalSpacing: 0,
+                                        initCategory: Category.RECENT,
+                                        bgColor:
+                                            Color.fromRGBO(37, 20, 63, 1),
+                                        indicatorColor: Colors.blue,
+                                        iconColor: Colors.white,
+                                        iconColorSelected: Colors.blue,
+                                        recentsLimit: 28,
+                                        tabIndicatorAnimDuration:
+                                            kTabScrollDuration,
+                                        categoryIcons:
+                                            const CategoryIcons(),
+                                        buttonMode: ButtonMode.MATERIAL),
+                                  );
+                                });
+                          },
+                          icon: FaIcon(
+                            FontAwesomeIcons.faceSmile,
+                            size: 35,
                             color: Colors.white,
                           ),
                         ),
-                        SizedBox(
-                          width: 10,
+                        IconButton(
+                            onPressed: () {
+                              _pickImage();
+                            },
+                            icon: FaIcon(
+                              FontAwesomeIcons.image,
+                              size: 35,
+                              color: Colors.white,
+                            )),
+                        IconButton(
+                          onPressed: () {
+                            _bodyController.clear();
+                            _imageList.clear();
+                            _titleController.clear();
+                          },
+                          icon: Icon(
+                            Icons.clear,
+                            size: 35,
+                            color: Colors.white,
+                          ),
                         ),
-                        FaIcon(FontAwesomeIcons.image,
-                            size: 40, color: Colors.white),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        FaIcon(FontAwesomeIcons.tag,
-                            size: 40, color: Colors.white),
-                        SizedBox(
-                          width: 10,
-                          height: 50,
-                        )
                       ],
                     ),
                   ),
@@ -149,7 +283,7 @@ class _notePageState extends State<notePage> {
               ],
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 30),
+              padding: const EdgeInsets.only(top: 30, left: 20, right: 20),
               child: Container(
                 decoration: BoxDecoration(
                     color: Color.fromRGBO(37, 20, 63, 1),
@@ -174,158 +308,277 @@ class _notePageState extends State<notePage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  heartFace = FaIcon(
-                                    FontAwesomeIcons.faceGrinHearts,
-                                    color: Colors.black,
-                                    size: 35,
-                                  );
-                                });
-                              },
-                              onTapCancel: () {
-                                setState(() {
-                                  heartFace = FaIcon(
-                                    FontAwesomeIcons.faceGrinHearts,
-                                    color: Colors.white,
-                                    size: 35,
-                                  );
-                                });
-                              },
-                              child: heartFace),
-                          GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  grinFace = FaIcon(
-                                    FontAwesomeIcons.faceGrinHearts,
-                                    color: Colors.black,
-                                    size: 35,
-                                  );
-                                });
-                              },
-                              child: grinFace),
-                          GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                mehFace = FaIcon(
-                                  FontAwesomeIcons.faceGrinHearts,
-                                  color: Colors.black,
-                                  size: 35,
-                                );
-                              });
-                            },
-                            child: mehFace,
+                          ButtonBar(
+                            alignment: MainAxisAlignment.spaceEvenly,
+                            buttonPadding: EdgeInsets.all(0),
+                            children: [
+                              IconButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      heartFace = FaIcon(
+                                        FontAwesomeIcons.faceGrinHearts,
+                                        size: 35,
+                                        color: Colors.greenAccent,
+                                      );
+                                      grinFace = FaIcon(
+                                        FontAwesomeIcons.faceGrin,
+                                        size: 35,
+                                        color: Colors.white,
+                                      );
+                                      mehFace = FaIcon(
+                                        FontAwesomeIcons.faceMeh,
+                                        size: 35,
+                                        color: Colors.white,
+                                      );
+                                      frownFace = FaIcon(
+                                        FontAwesomeIcons.faceFrown,
+                                        size: 35,
+                                        color: Colors.white,
+                                      );
+                                      deadFace = FaIcon(
+                                        FontAwesomeIcons.faceDizzy,
+                                        size: 35,
+                                        color: Colors.white,
+                                      );
+                                      selectedFace = heartFace;
+                                    });
+                                  },
+                                  icon: heartFace),
+                              IconButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      grinFace = FaIcon(
+                                        FontAwesomeIcons.faceGrin,
+                                        size: 35,
+                                        color: Colors.lightGreenAccent,
+                                      );
+                                      heartFace = FaIcon(
+                                        FontAwesomeIcons.faceGrinHearts,
+                                        size: 35,
+                                        color: Colors.white,
+                                      );
+                                      mehFace = FaIcon(
+                                        FontAwesomeIcons.faceMeh,
+                                        size: 35,
+                                        color: Colors.white,
+                                      );
+                                      frownFace = FaIcon(
+                                        FontAwesomeIcons.faceFrown,
+                                        size: 35,
+                                        color: Colors.white,
+                                      );
+                                      deadFace = FaIcon(
+                                        FontAwesomeIcons.faceDizzy,
+                                        size: 35,
+                                        color: Colors.white,
+                                      );
+                                      selectedFace = grinFace;
+                                    });
+                                  },
+                                  icon: grinFace),
+                              IconButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      mehFace = FaIcon(
+                                        FontAwesomeIcons.faceMeh,
+                                        size: 35,
+                                        color: Colors.yellowAccent,
+                                      );
+                                      heartFace = FaIcon(
+                                        FontAwesomeIcons.faceGrinHearts,
+                                        size: 35,
+                                        color: Colors.white,
+                                      );
+                                      grinFace = FaIcon(
+                                        FontAwesomeIcons.faceGrin,
+                                        size: 35,
+                                        color: Colors.white,
+                                      );
+                                      frownFace = FaIcon(
+                                        FontAwesomeIcons.faceFrown,
+                                        size: 35,
+                                        color: Colors.white,
+                                      );
+                                      deadFace = FaIcon(
+                                        FontAwesomeIcons.faceDizzy,
+                                        size: 35,
+                                        color: Colors.white,
+                                      );
+                                      selectedFace = mehFace;
+                                    });
+                                  },
+                                  icon: mehFace),
+                              IconButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      frownFace = FaIcon(
+                                        FontAwesomeIcons.faceFrown,
+                                        size: 35,
+                                        color: Colors.orange,
+                                      );
+                                      heartFace = FaIcon(
+                                        FontAwesomeIcons.faceGrinHearts,
+                                        size: 35,
+                                        color: Colors.white,
+                                      );
+                                      grinFace = FaIcon(
+                                        FontAwesomeIcons.faceGrin,
+                                        size: 35,
+                                        color: Colors.white,
+                                      );
+                                      mehFace = FaIcon(
+                                        FontAwesomeIcons.faceMeh,
+                                        size: 35,
+                                        color: Colors.white,
+                                      );
+                                      deadFace = FaIcon(
+                                        FontAwesomeIcons.faceDizzy,
+                                        size: 35,
+                                        color: Colors.white,
+                                      );
+                                      selectedFace = frownFace;
+                                    });
+                                  },
+                                  icon: frownFace),
+                              IconButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      deadFace = FaIcon(
+                                        FontAwesomeIcons.faceDizzy,
+                                        size: 35,
+                                        color: Colors.redAccent,
+                                      );
+                                      heartFace = FaIcon(
+                                        FontAwesomeIcons.faceGrinHearts,
+                                        size: 35,
+                                        color: Colors.white,
+                                      );
+                                      grinFace = FaIcon(
+                                        FontAwesomeIcons.faceGrin,
+                                        size: 35,
+                                        color: Colors.white,
+                                      );
+                                      mehFace = FaIcon(
+                                        FontAwesomeIcons.faceMeh,
+                                        size: 35,
+                                        color: Colors.white,
+                                      );
+                                      frownFace = FaIcon(
+                                        FontAwesomeIcons.faceFrown,
+                                        size: 35,
+                                        color: Colors.white,
+                                      );
+                                      selectedFace = deadFace;
+                                    });
+                                  },
+                                  icon: deadFace),
+                            ],
                           ),
-                          GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                frownFace = FaIcon(
-                                  FontAwesomeIcons.faceGrinHearts,
-                                  color: Colors.black,
-                                  size: 35,
-                                );
-                              });
-                            },
-                            child: frownFace,),
-                          GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                deadFace = FaIcon(
-                                  FontAwesomeIcons.faceGrinHearts,
-                                  color: Colors.black,
-                                  size: 35,
-                                );
-                              });
-                            },
-                            child: deadFace,),
                         ],
                       ),
                     )
                   ],
                 ),
               ),
-            )
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 20, right: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  ElevatedButton(onPressed: () {
+                    Navigator.pop(context);
+                  }, child: Text('Kaydet')),
+                ],
+              ),
+            ),
+            SizedBox(height: 20,),
           ],
         ),
       ]),
     );
+  }
 
+  Future _pickImage() async {
+
+    final returnedImage =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (returnedImage == null) return;
+    setState(() {
+      _image = File(returnedImage.path);
+      _imageList.insert(0,_image!);
+    });
+  }
+
+  String ayHesaplama(day) {
+    String ay = '';
+    switch (day.month) {
+      case 1:
+        ay = 'Ocak';
+        break;
+      case 2:
+        ay = 'Şubat';
+        break;
+      case 3:
+        ay = 'Mart';
+        break;
+      case 4:
+        ay = 'Nisan';
+        break;
+      case 5:
+        ay = 'Mayıs';
+        break;
+      case 6:
+        ay = 'Haziran';
+        break;
+      case 7:
+        ay = 'Temmuz';
+        break;
+      case 8:
+        ay = 'Ağustos';
+        break;
+      case 9:
+        ay = 'Eylül';
+        break;
+      case 10:
+        ay = 'Ekim';
+        break;
+      case 11:
+        ay = 'Kasım';
+        break;
+      case 12:
+        ay = 'Aralık';
+        break;
+    }
+    return ay;
+  }
+
+  String gunHesaplama(day) {
+    String gun = '';
+    switch (day.weekday) {
+      case 1:
+        gun = 'Pazartesi';
+        break;
+      case 2:
+        gun = 'Salı';
+        break;
+      case 3:
+        gun = 'Çarşamba';
+        break;
+      case 4:
+        gun = 'Perşembe';
+        break;
+      case 5:
+        gun = 'Cuma';
+        break;
+      case 6:
+        gun = 'Cumartesi';
+        break;
+      case 7:
+        gun = 'Pazar';
+        break;
+    }
+    return gun;
   }
 }
 
-
-String ayHesaplama() {
-  String ay = '';
-  switch (DateTime
-      .now()
-      .month) {
-    case 1:
-      ay = 'Ocak';
-      break;
-    case 2:
-      ay = 'Şubat';
-      break;
-    case 3:
-      ay = 'Mart';
-      break;
-    case 4:
-      ay = 'Nisan';
-      break;
-    case 5:
-      ay = 'Mayıs';
-      break;
-    case 6:
-      ay = 'Haziran';
-      break;
-    case 7:
-      ay = 'Temmuz';
-      break;
-    case 8:
-      ay = 'Ağustos';
-      break;
-    case 9:
-      ay = 'Eylül';
-      break;
-    case 10:
-      ay = 'Ekim';
-      break;
-    case 11:
-      ay = 'Kasım';
-      break;
-    case 12:
-      ay = 'Aralık';
-      break;
-  }
-  return ay;
-}
-
-String gunHesaplama() {
-  String gun = '';
-  switch (DateTime
-      .now()
-      .weekday) {
-    case 1:
-      gun = 'Pazartesi';
-      break;
-    case 2:
-      gun = 'Salı';
-      break;
-    case 3:
-      gun = 'Çarşamba';
-      break;
-    case 4:
-      gun = 'Perşembe';
-      break;
-    case 5:
-      gun = 'Cuma';
-      break;
-    case 6:
-      gun = 'Cumartesi';
-      break;
-    case 7:
-      gun = 'Pazar';
-      break;
-  }
-  return gun;
-}

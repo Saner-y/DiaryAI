@@ -177,8 +177,11 @@ class _calendarPageState extends State<calendarPage> {
                             child: ListTile(
                             shape: RoundedRectangleBorder(side: BorderSide()),
                               visualDensity: VisualDensity(vertical: -4),
+                              title: Text(
+                                '',
+                                style: TextStyle(color: Colors.white),
+                              ),
                               subtitle: Text(
-                                '' +
                                     _selectedDay!.day.toString() +
                                     ' ' +
                                     ayHesaplama(_selectedDay!) +

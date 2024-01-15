@@ -2,12 +2,34 @@ import 'package:diaryai/calendarPage.dart';
 import 'package:diaryai/menuPage.dart';
 import 'package:flutter/material.dart';
 import 'package:diaryai/notePage.dart';
+import 'package:flutter/services.dart';
+import 'package:local_auth/local_auth.dart';
 // import 'package:flutter/services.dart';
 
-class homePage extends StatelessWidget {
+class homePage extends StatefulWidget {
   const homePage({Key? key}) : super(key: key);
 
   @override
+  State<homePage> createState() => _homePageState();
+}
+
+class _homePageState extends State<homePage> {
+  late final LocalAuthentication auth;
+
+  bool _supportState = false;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    auth = LocalAuthentication();
+    auth.isDeviceSupported().then(
+            (bool isSupported) => setState(() => _supportState = isSupported)
+    );
+    _getAvailableBiometrics();
+    _authenticate();
+
+  }
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
@@ -110,5 +132,28 @@ class homePage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<void> _getAvailableBiometrics() async {
+    List<BiometricType> availableBiometrics = await auth.getAvailableBiometrics();
+    print(availableBiometrics);
+    if (!mounted) {
+      return;
+    }
+  }
+
+  Future<void> _authenticate() async {
+    try {
+      bool authenticated = await auth.authenticate(
+          localizedReason: 'Parmak izinizi taratın',
+          options: const AuthenticationOptions(
+              stickyAuth: true,
+              biometricOnly: true
+          )
+      );
+      print(authenticated);
+    } on PlatformException catch (e) {
+      print(e);
+    }
   }
 }
