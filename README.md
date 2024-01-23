@@ -2,4 +2,4 @@
 
 A diary app with some AI features.
 
-![DiaryAI](https://ibb.co/1XKMrRM)  
+![DiaryAI](https://i.ibb.co/Sm0ctVc/DiaryAI.png)  
