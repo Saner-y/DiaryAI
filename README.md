@@ -1,3 +1,3 @@
 # DiaryAI
 
-A diary app with some AI features.
+![DiaryAI](Downloads/DiaryAI.png)  
