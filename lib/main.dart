@@ -1,14 +1,21 @@
+import 'package:diaryai/loginPage.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:local_auth/local_auth.dart';
+import 'firebase_options.dart';
+import 'lockScreen.dart';
 import 'package:flutter_screen_lock/flutter_screen_lock.dart';
 import 'homepage.dart';
 
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(DiaryAI());
 }
 
@@ -26,7 +33,7 @@ class DiaryAI extends StatelessWidget {
             bodyMedium: GoogleFonts.poppins(textStyle: textTheme.bodyMedium)),
       ),
       title: 'Material App',
-      home: homePage(),
+      home: LoginPage(),
     );
   }
 }

@@ -53,10 +53,10 @@ class _calendarPageState extends State<calendarPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color.fromARGB(255, 40, 39, 81),
-        iconTheme: IconThemeData(color: Colors.white, size: 52),
+        iconTheme: IconThemeData(color: Colors.white, size: 48),
         title: Text(
           'Takvim',
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
         ),
       ),
       body: Container(

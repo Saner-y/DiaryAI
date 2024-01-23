@@ -11,8 +11,13 @@ class menuPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 40, 39, 81),
       appBar: AppBar(
+        title: Text('Menü', style: TextStyle(
+          color: Colors.white,
+          fontSize: 24,
+          fontWeight: FontWeight.bold,
+        ),),
         backgroundColor: Color.fromARGB(255, 40, 39, 81),
-        iconTheme: IconThemeData(color: Colors.white, size: 52),
+        iconTheme: IconThemeData(color: Colors.white, size: 48),
       ),
       body: ListView(
         children: [

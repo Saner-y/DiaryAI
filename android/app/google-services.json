@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "805791916173",
+    "firebase_url": "https://diaryai-dd8bb-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "diaryai-dd8bb",
+    "storage_bucket": "diaryai-dd8bb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:805791916173:android:58bac90c0bb7921db302c4",
+        "android_client_info": {
+          "package_name": "com.example.diaryai"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "805791916173-680e8hque5m946eh8scekq4p6mrrgnlm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBXbHTfMZYRmW7kgo-vfJAw_3rQDcPbLpc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "805791916173-680e8hque5m946eh8scekq4p6mrrgnlm.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "805791916173-28g3cq54q8chr3ec142ucr6001r16hgu.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.diaryai.RunnerTests"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

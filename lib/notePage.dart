@@ -1,9 +1,12 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:toast/toast.dart';
 
 class notePage extends StatefulWidget {
   const notePage({super.key});
@@ -13,6 +16,25 @@ class notePage extends StatefulWidget {
 }
 
 class _notePageState extends State<notePage> {
+  Future<void> saveNote(String title, String body, String faceEmoji) async {
+    User? currentUser = FirebaseAuth.instance.currentUser;
+
+    if (currentUser != null) {
+      CollectionReference notes = FirebaseFirestore.instance.collection('users')
+          .doc(currentUser.uid)
+          .collection('notes');
+
+      return notes
+          .add({
+        'title': title,
+        'body': body,
+        'faceEmoji': faceEmoji,
+        'timestamp': DateTime.now()
+      })
+          .then((value) => print("Note Added"))
+          .catchError((error) => print("Failed to add note: $error"));
+    }
+  }
   TextEditingController _titleController = TextEditingController();
   DateTime today = DateTime.now();
   List<File> _imageList = [];
@@ -50,12 +72,14 @@ class _notePageState extends State<notePage> {
     _bodyController = TextEditingController();
   }
 
+
   @override
   Widget build(BuildContext context) {
+    ToastContext().init(context);
     return Scaffold(
       appBar: AppBar(
           backgroundColor: Colors.transparent,
-          iconTheme: IconThemeData(color: Colors.white, size: 52)),
+          iconTheme: IconThemeData(color: Colors.white, size: 48)),
       backgroundColor: Color.fromRGBO(40, 39, 81, 1),
       body: ListView(children: [
         Column(
@@ -487,8 +511,14 @@ class _notePageState extends State<notePage> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   ElevatedButton(onPressed: () {
+                    saveNote(_titleController.text, _bodyController.text, selectedFace.toString());
                     Navigator.pop(context);
-                  }, child: Text('Kaydet')),
+                    Toast.show('Kaydedildi', duration: Toast.lengthShort, gravity: Toast.center);
+                  },style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(Color.fromRGBO(37, 20, 63, 1)),
+                  ), child: Text('Kaydet', style: TextStyle(
+                    color: Colors.white,
+                  ),),),
                 ],
               ),
             ),
