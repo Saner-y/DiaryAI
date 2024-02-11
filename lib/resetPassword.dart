@@ -49,17 +49,11 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                     TextFormField(
                       style: TextStyle(color: Colors.white),
                       decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Colors.white24,
                         hintText: 'E-posta',
                         hintStyle: TextStyle(color: Colors.white54),
                         prefixIcon: Icon(
                           Icons.email,
                           color: Colors.white,
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide.none,
                         ),
                       ),
                       validator: (value) {
@@ -73,26 +67,20 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                     Padding(
                       padding: const EdgeInsets.all(20.0),
                       child: ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                              Color.fromRGBO(37, 20, 63, 1)),
+                        ),
+                        child: Text(
+                          'Şifre Sıfırlama Bağlantısı Gönder',
+                          style: TextStyle(color: Colors.white),
+                        ),
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
                             _formKey.currentState!.save();
                             _resetPassword();
                           }
                         },
-                        style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(
-                              Color.fromRGBO(37, 20, 63, 1)),
-                          padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.symmetric(horizontal: 30, vertical: 10)),
-                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                        ),
-                        child: Text(
-                          'Şifre Sıfırlama Bağlantısı Gönder',
-                          style: TextStyle(color: Colors.white),
-                        ),
                       ),
                     ),
                   ],

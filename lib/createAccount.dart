@@ -85,34 +85,192 @@ class _CreateAccountState extends State<CreateAccount> {
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.white, size: 48),
-        title: Text('Create Account', style: TextStyle(color: Colors.white,fontSize: 24,fontWeight: FontWeight.bold),),
+        title: Text('Hesap Oluştur', style: TextStyle(color: Colors.white,fontSize: 24,fontWeight: FontWeight.bold),),
         backgroundColor: Color.fromARGB(255, 40, 39, 81),
       ),
       backgroundColor: Color.fromARGB(255, 40, 39, 81),
       body: Center(
-        child: Padding(
-          padding: EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              // TextField'lar ve butonlar için dolgulu bir stiller belirler, yuvarlak köşeli bir sınır ekler ve padding ve margin değerlerini ayarlar.
-              _buildTextField(nameController, 'Name', Icons.person),
-              SizedBox(height: 10),
-              _buildTextField(surnameController, 'Surname', Icons.person),
-              SizedBox(height: 10),
-              _buildTextField(usernameController, 'Username', Icons.person),
-              SizedBox(height: 10),
-              _buildTextField(ageController, 'Age', Icons.person),
-              SizedBox(height: 10),
-              _buildTextField(phoneNumberController, 'Phone Number', Icons.phone),
-              SizedBox(height: 10),
-              _buildTextField(emailController, 'Email', Icons.email),
-              SizedBox(height: 10),
-              _buildPasswordField(passwordController, 'Password', Icons.lock),
-              SizedBox(height: 10),
-              _buildPasswordField(confirmPasswordController, 'Confirm Password', Icons.lock),
-              SizedBox(height: 10),
-              ElevatedButton(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            /*Text('Create Account', style: TextStyle(
+              fontSize: 32,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),),*/
+            Padding(padding: const EdgeInsets.only(left: 20,right: 20),
+            child: TextField(
+              controller: nameController,
+              textInputAction: TextInputAction.next,
+              keyboardType: TextInputType.name,
+              onEditingComplete: () => FocusScope.of(context).nextFocus(),
+              style: TextStyle(
+                color: Colors.white,
+              ),
+              decoration: InputDecoration(
+                hintText: 'İsim',
+                hintStyle: TextStyle(
+                  color: Colors.white54,
+                ),
+                prefixIcon: Icon(Icons.person, color: Colors.white,),
+              ),
+            ),),
+            Padding(padding: const EdgeInsets.only(left: 20,right: 20),
+              child: TextField(
+                controller: surnameController,
+                textInputAction: TextInputAction.next,
+                keyboardType: TextInputType.name,
+                onEditingComplete: () => FocusScope.of(context).nextFocus(),
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+                decoration: InputDecoration(
+                  hintText: 'Soyisim',
+                  hintStyle: TextStyle(
+                    color: Colors.white54,
+                  ),
+                  prefixIcon: Icon(Icons.person, color: Colors.white,),
+                ),
+              ),),
+            Padding(padding: const EdgeInsets.only(left: 20,right: 20),
+              child: TextField(
+                controller: usernameController,
+                textInputAction: TextInputAction.next,
+                keyboardType: TextInputType.name,
+                onEditingComplete: () => FocusScope.of(context).nextFocus(),
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+                decoration: InputDecoration(
+                  hintText: 'Kullanıcı Adı',
+                  hintStyle: TextStyle(
+                    color: Colors.white54,
+                  ),
+                  prefixIcon: Icon(Icons.person, color: Colors.white,),
+                ),
+              ),),
+            Padding(padding: const EdgeInsets.only(left: 20,right: 20),
+              child: TextField(
+                controller: ageController,
+                textInputAction: TextInputAction.next,
+                keyboardType: TextInputType.number,
+                onEditingComplete: () => FocusScope.of(context).nextFocus(),
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+                decoration: InputDecoration(
+                  hintText: 'Yaş',
+                  hintStyle: TextStyle(
+                    color: Colors.white54,
+                  ),
+                  prefixIcon: Icon(Icons.person, color: Colors.white,),
+                ),
+              ),),
+            Padding(padding: const EdgeInsets.only(left: 20,right: 20),
+              child: TextField(
+                controller: phoneNumberController,
+                textInputAction: TextInputAction.next,
+                keyboardType: TextInputType.phone,
+                onEditingComplete: () => FocusScope.of(context).nextFocus(),
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+                decoration: InputDecoration(
+                  hintText: 'Telefon Numarası',
+                  hintStyle: TextStyle(
+                    color: Colors.white54,
+                  ),
+                  prefixIcon: Icon(Icons.phone, color: Colors.white,),
+                ),
+              ),),
+            Padding(
+              padding: const EdgeInsets.only(left: 20, right: 20),
+              child: TextField(
+                controller: emailController,
+                textInputAction: TextInputAction.next,
+                keyboardType: TextInputType.emailAddress,
+                onEditingComplete: () => FocusScope.of(context).nextFocus(),
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+                decoration: InputDecoration(
+                  hintText: 'E-posta',
+                  hintStyle: TextStyle(
+                    color: Colors.white54,
+                  ),
+                  prefixIcon: Icon(Icons.email, color: Colors.white,),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 20, right: 20),
+              child: TextField(
+                controller: passwordController,
+                obscureText: _showPassword,
+                textInputAction: TextInputAction.next,
+                onEditingComplete: () => FocusScope.of(context).nextFocus(),
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+                decoration: InputDecoration(
+                  hintText: 'Şifre',
+                  hintStyle: TextStyle(
+                    color: Colors.white54,
+                  ),
+                  prefixIcon: Icon(Icons.lock, color: Colors.white,),
+                  suffixIcon: IconButton(
+                    icon: visibilityIcon,
+                    onPressed: () {
+                      setState(() {
+                        _showPassword = !_showPassword;
+                        if (_showPassword) {
+                          visibilityIcon = Icon(Icons.visibility, color: Colors.white,);
+                        } else {
+                          visibilityIcon = Icon(Icons.visibility_off, color: Colors.white,);
+                        }
+                      });
+                    },
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 20, right: 20),
+              child: TextField(
+                controller: confirmPasswordController,
+                obscureText: _confirmShowPassword,
+                textInputAction: TextInputAction.done,
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+                decoration: InputDecoration(
+                  hintText: 'Şifreyi Onayla',
+                  hintStyle: TextStyle(
+                    color: Colors.white54,
+                  ),
+                  prefixIcon: Icon(Icons.lock, color: Colors.white,),
+                  suffixIcon: IconButton(
+                    icon: confirmVisibilityIcon,
+                    onPressed: () {
+                      setState(() {
+                        _confirmShowPassword = !_confirmShowPassword;
+                        if (_confirmShowPassword) {
+                          confirmVisibilityIcon = Icon(Icons.visibility, color: Colors.white,);
+                        } else {
+                          confirmVisibilityIcon = Icon(Icons.visibility_off, color: Colors.white,);
+                        }
+                      });
+                    },
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 20),
+              child: ElevatedButton(
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all<Color>(Color.fromRGBO(37, 20, 63, 1)),
+                ),
                 onPressed: () async {
                   if (passwordController.text != confirmPasswordController.text) {
                     // Şifreler aynı değilse, bir hata mesajı gösteririz
@@ -135,83 +293,12 @@ class _CreateAccountState extends State<CreateAccount> {
                     }
                   }
                 },
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(Color.fromRGBO(37, 20, 63, 1)),
-                  padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.symmetric(horizontal: 30, vertical: 10)),
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                ),
-                child: Text('Create Account', style: TextStyle(
-                  color: Colors.white,
+                child: const Text('Hesap Oluştur', style: TextStyle(color: Colors.white),
                 ),),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildTextField(TextEditingController controller, String hintText, IconData icon) {
-    return TextField(
-      controller: controller,
-      textInputAction: TextInputAction.next,
-      style: TextStyle(
-        color: Colors.white,
-      ),
-      decoration: InputDecoration(
-        filled: true,
-        fillColor: Colors.white24,
-        hintText: hintText,
-        hintStyle: TextStyle(
-          color: Colors.white54,
-        ),
-        prefixIcon: Icon(icon, color: Colors.white,),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide.none,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildPasswordField(TextEditingController controller, String hintText, IconData icon) {
-    return TextField(
-      controller: controller,
-      obscureText: _showPassword,
-      textInputAction: TextInputAction.next,
-      style: TextStyle(
-        color: Colors.white,
-      ),
-      decoration: InputDecoration(
-        filled: true,
-        fillColor: Colors.white24,
-        hintText: hintText,
-        hintStyle: TextStyle(
-          color: Colors.white54,
-        ),
-        prefixIcon: Icon(icon, color: Colors.white,),
-        suffixIcon: IconButton(
-          icon: visibilityIcon,
-          onPressed: () {
-            setState(() {
-              _showPassword = !_showPassword;
-              if (_showPassword) {
-                visibilityIcon = Icon(Icons.visibility, color: Colors.white,);
-              } else {
-                visibilityIcon = Icon(Icons.visibility_off, color: Colors.white,);
-              }
-            });
-          },
-        ),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide.none,
-        ),
-      ),
+            ),
+          ],
+        )
+      )
     );
   }
 }

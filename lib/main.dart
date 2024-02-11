@@ -1,4 +1,5 @@
 import 'package:diaryai/loginPage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -32,8 +33,29 @@ class DiaryAI extends StatelessWidget {
         textTheme: GoogleFonts.poppinsTextTheme(textTheme).copyWith(
             bodyMedium: GoogleFonts.poppins(textStyle: textTheme.bodyMedium)),
       ),
-      title: 'Material App',
-      home: LoginPage(),
+      title: 'DiaryAI',
+      home: _getLandingPage(),
+    );
+  }
+  Widget _getLandingPage() {
+    return StreamBuilder<User?>(
+      stream: FirebaseAuth.instance.authStateChanges(),
+      builder: (BuildContext context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.active) {
+          User? user = snapshot.data;
+          if (user == null) {
+            return LoginPage();
+          } else {
+            return LockScreen();
+          }
+        } else {
+          return Scaffold(
+            body: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
+        }
+      },
     );
   }
 }

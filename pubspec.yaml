@@ -52,6 +52,15 @@ dependencies:
   firebase_auth: ^4.16.0
   firebase_ui_auth: ^1.12.1
   cloud_firestore: ^4.14.0
+  firebase_storage: ^11.6.0
+  shared_preferences: ^2.0.8
+  sentiment_dart: ^0.0.5
+  image_gallery_saver: ^2.0.3
+  permission_handler: ^11.2.0
+  flutter_local_notifications: ^16.3.2
+  http: ^1.2.0
+  fl_chart: ^0.66.1
+  flutter_launcher_icons: ^0.13.1
 
 dev_dependencies:
   flutter_test:
